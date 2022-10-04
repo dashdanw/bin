@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import os
+import sys
+import click
+from datetime import timedelta
+
+def parse_duration_arg(dur):
+  hours, minutes, seconds = (int(i) for i in dur.split(':'))
+  return {'hours': hours, 'minutes': minutes, 'seconds': seconds}
+
+@click.command()
+@click.option('-s', '--start')
+@click.option('-e', '--end')
+@click.option('-t', '--target')
+@click.option('-o', '--output')
+def slice_video(start, end, target, output):
+  start = parse_duration_arg(start)
+  start = timedelta(**start)
+  end = parse_duration_arg(end)
+  end = timedelta(**end)
+  clip_duration = end - start
+  os.system(f"ffmpeg -i '{target}' -ss '{start}' -t '{clip_duration}' -c:v copy -c:a copy '{output}'")
+
+if __name__ == '__main__':
+  slice_video()
