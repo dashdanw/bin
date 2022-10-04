@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
+import re
 import os
 import sys
 import click
+
 from datetime import timedelta
 
+timestamp_validation = re.compile('^\d{2}:\d{2}:\d{2}$')
+
 def parse_duration_arg(dur):
+  if not timestamp_validation.match(dur):
+    raise ValueError(f'invalid timestamp paramater {dur}, MUST be HH:MM:SS')
   hours, minutes, seconds = (int(i) for i in dur.split(':'))
   return {'hours': hours, 'minutes': minutes, 'seconds': seconds}
 
@@ -14,6 +20,7 @@ def parse_duration_arg(dur):
 @click.option('-t', '--target', help="file to slice")
 @click.option('-o', '--output', help="destination file for sliced clip")
 def slice_video(start, end, target, output):
+  
   start = parse_duration_arg(start)
   start = timedelta(**start)
   end = parse_duration_arg(end)
