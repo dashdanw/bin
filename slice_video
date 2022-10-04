@@ -9,10 +9,10 @@ def parse_duration_arg(dur):
   return {'hours': hours, 'minutes': minutes, 'seconds': seconds}
 
 @click.command()
-@click.option('-s', '--start')
-@click.option('-e', '--end')
-@click.option('-t', '--target')
-@click.option('-o', '--output')
+@click.option('-s', '--start', help="timestamp of when the desired clip starts")
+@click.option('-e', '--end', help="timestamp of when the desired clip ends")
+@click.option('-t', '--target', help="file to slice")
+@click.option('-o', '--output', help="destination file for sliced clip")
 def slice_video(start, end, target, output):
   start = parse_duration_arg(start)
   start = timedelta(**start)
