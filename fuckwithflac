@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+import os
+import click
+
+@click.command()
+def convert_flac():
+    files = os.listdir(os.getcwd())
+    
+    flac_files = [f for f in files if f.endswith('flac')]
+    possible_conversions = [f.replace('.flac', '.wav') for f in flac_files]
+    
+    existing_wav_files = [f for f in files if f.endswith('wav')]
+    to_convert = set(possible_conversions).difference(existing_wav_files)
+
+    import ipdb; ipdb.set_trace()
+
+if __name__ == "__main__":
+    convert_flac()
